@@ -1,12 +1,19 @@
 // Base variables
-//  const path = require('path');
+const path = require('path');
+const webpack = require('webpack');
 
 // Importing plugins that do not come by default in webpack
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const src = path.resolve(__dirname, 'src/');
 module.exports = {
+  resolve: {
+    alias: {
+      '@': src,
+    },
+  },
   entry: {
     // JS and scss entry points
     main: [
@@ -120,7 +127,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: 'fonts/[name].[ext]',
-              publicPath: '../', // fonts folder is outside scss/css folder, thats why we need to go one folder up.
+              //  publicPath: '../', // fonts folder is outside scss/css folder, thats why we need to go one folder up.
             },
           },
         ],
@@ -128,12 +135,11 @@ module.exports = {
     ],
   },
   plugins: [
-    // uncomment to enable jQuery
-    // new webpack.ProvidePlugin({
-    //   $: 'jquery',
-    //   jQuery: 'jquery',
-    //   'window.jQuery': 'jquery',
-    // }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name]-[contenthash:4].css',
       chunkFilename: 'css/[id]-[contenthash:4].css',
